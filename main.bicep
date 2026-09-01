@@ -6,6 +6,19 @@ param nsg object
 
 param storageAccountName string
 
+var nsgAttachments =[
+  {
+    vnetName: vnet.name
+    subnetName: vnet.subnets[0].name
+    addressPrefix: vnet.subnets[0].addressPrefix
+  }
+  {
+    vnetName: vnet.name
+    subnetName: vnet.subnets[1].name
+    addressPrefix: vnet.subnets[1].addressPrefix
+  }
+]
+
 module devnet 'modules/network/vnet.bicep' = {
   name: 'dev-network'
 
@@ -31,6 +44,7 @@ module devnsg 'modules/security/nsg.bicep' = {
     location: location
     name: nsg.name
     rules: nsg.rules
+    attachments: nsgAttachments
     
   }
 }
