@@ -2,6 +2,8 @@ param location string
 
 param vnet object
 
+param nsg object
+
 param storageAccountName string
 
 module devnet 'modules/network/vnet.bicep' = {
@@ -20,5 +22,15 @@ module devstorage 'modules/storage/storageAccount.bicep' = {
   params: {
     name: storageAccountName
     location: location
+  }
+}
+
+module devnsg 'modules/security/nsg.bicep' = {
+  name: 'shared-nsg'
+  params: {
+    location: location
+    name: nsg.name
+    rules: nsg.rules
+    
   }
 }
